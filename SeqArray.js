@@ -1,13 +1,6 @@
 const Seq = require('./Seq.js')
-const addToSeqs = function(type,seqsArr){
-    if (seqsArr.length === 0 || seqsArr[seqsArr.length - 1].type !== type) {
-        seqsArr.push(new Seq(2, type));
-    } else {
-        seqsArr[seqsArr.length - 1].length++;
-    }
-}
 // this will hold the results of any sequence number calculation so that
-// the answer to the same n wont need to be calculated twice
+// the answer to the same sequence wont need to be calculated twice
 const nSums = {};
 const nSum = (n) => (
     nSums[n] ?
@@ -31,16 +24,23 @@ class SeqArray {
         })
         return(sum)
     }
+    addToSeqsBuild(type) {
+        if (this.seqs.length === 0 || this.seqs[this.seqs.length - 1].type !== type) {
+            this.seqs.push(new Seq(2, type));
+        } else {
+            this.seqs[this.seqs.length - 1].length++;
+        }
+    }
     build(prices){
         this.last = prices.shift();
         for (let i=1; i<this.windowSize; i++){
             let curr = prices.shift();
             if (curr > this.last){
-                addToSeqs(1,this.seqs);
+                this.addToSeqsBuild(1);
             }else if (curr === this.last){
-                addToSeqs(0,this.seqs);
+                this.addToSeqsBuild(0);
             }else{
-                addToSeqs(-1,this.seqs);
+                this.addToSeqsBuild(-1);
             }
             this.last = curr;
         }
