@@ -1,10 +1,8 @@
 const Seq = require('./Seq.js')
-const addToSeqs = function(i,type,seqsArr){
+const addToSeqs = function(type,seqsArr){
     if (seqsArr.length === 0 || seqsArr[seqsArr.length - 1].type !== type) {
-        seqsArr.push(new Seq(i - 1, 2, type));
-        console.log('new seq',i)
+        seqsArr.push(new Seq(2, type));
     } else {
-        console.log('adding to length',i)
         seqsArr[seqsArr.length - 1].length++;
     }
 }
@@ -12,22 +10,64 @@ class SeqArray {
     constructor(k){
         this.seqs = [];
         this.windowSize = k;
+        this.last = null;
     }
-
+    seqTotal(){
+        let sum = 0;
+        this.seqs.forEach((seq)=>{
+            console.log(sum,seq, ((seq.length * seq.length) - seq.length) / 2)
+            if (seq.type !== 0){
+                sum += ((seq.length * seq.length) - seq.length)/2 * seq.type;
+            }
+        })
+        return(sum)
+    }
     build(prices){
-        let last = prices.shift();
+        this.last = prices.shift();
         for (let i=1; i<this.windowSize; i++){
             let curr = prices.shift();
-            if (curr > last){
-                addToSeqs(i,1,this.seqs);
-            }else if (curr === last){
-                addToSeqs(i,0,this.seqs);
+            if (curr > this.last){
+                addToSeqs(1,this.seqs);
+            }else if (curr === this.last){
+                addToSeqs(0,this.seqs);
             }else{
-                addToSeqs(i,-1,this.seqs);
+                addToSeqs(-1,this.seqs);
             }
-            last = curr;
+            this.last = curr;
         }
     return this;
+    }
+    // decrements/removes the first sequence
+    // incriments the last sequence or starts new one
+    add(currentPrice){
+        // console.log('start',currentPrice, this.seqs)
+        //decrement the first sequence
+        this.seqs[0].length--
+        // if its now empty delete it
+        if (this.seqs[0].length < 2){
+            this.seqs.shift();
+        }
+        //incriment the last sequence or start a new one
+        if (currentPrice > this.last) {
+            this.addToSeqs(1);
+        } else if (currentPrice === this.last) {
+            this.addToSeqs(0);
+        } else {
+            this.addToSeqs(-1);
+        }
+        // console.log('after',currentPrice,this.seqs)
+        this.last = currentPrice;
+    }
+    // checks to see if the new element continues the last sequence
+    // if it doesnt a new sequence is started
+    // else the last sequenec is incrimented
+    addToSeqs(type){
+        const length = this.seqs.length
+        if (this.seqs[length - 1].type !== type) {
+            this.seqs.push(new Seq(2, type));
+        } else {
+            this.seqs[length - 1].length++;
+        }
     }
 }
 

@@ -1,5 +1,4 @@
-const Seq = function(start,length,type){
-    this.start = start;
+const Seq = function(length,type){
     this.length = length;
     this.type = type;
 }
