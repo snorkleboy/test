@@ -6,6 +6,16 @@ const addToSeqs = function(type,seqsArr){
         seqsArr[seqsArr.length - 1].length++;
     }
 }
+// this will hold the results of any sequence number calculation so that
+// the answer to the same n wont need to be calculated twice
+const nSums = {};
+const nSum = (n) => (
+    nSums[n] ?
+        nSums[n]
+    :
+        nSums[n] = ((n * n) - n) / 2
+)
+   
 class SeqArray {
     constructor(k){
         this.seqs = [];
@@ -15,9 +25,8 @@ class SeqArray {
     seqTotal(){
         let sum = 0;
         this.seqs.forEach((seq)=>{
-            console.log(sum,seq, ((seq.length * seq.length) - seq.length) / 2)
             if (seq.type !== 0){
-                sum += ((seq.length * seq.length) - seq.length)/2 * seq.type;
+                sum += nSum(seq.length) * seq.type;
             }
         })
         return(sum)
