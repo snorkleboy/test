@@ -8,16 +8,16 @@ const SeqArray = require('./SeqArray.js')
 // and incriment/add to seqArray.last depending on whether the new element is
 // a continuation of a previous contiguous subsequence or the start of a new one.
 const SeqAnalysis = function(k,priceArray){
-    // seqArray.build takes k elements out of priceArray to build itself. 
+    // seqArray.build uses k elements out of priceArray to build itself. 
     // once built we can get the first window SeqTotal
     const seqArray = new SeqArray(k).build(priceArray);
     console.log(seqArray.seqTotal());
     // iterate through remaining members of priceArray and add each to SeqArray.
     // each new element after seqArray has been built is a new window.
-    priceArray.forEach(price => {
-        seqArray.add(price);
+    for(let i = k; i < priceArray.length; i++){
+        seqArray.add(priceArray[i]);
         console.log(seqArray.seqTotal());
-    });
+    }
 }
 
 module.exports = SeqAnalysis

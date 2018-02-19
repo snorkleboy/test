@@ -1,14 +1,11 @@
 const Seq = require('./Seq.js')
-// this will hold the results of any sequence number calculation so that
-// the answer to the same sequence wont need to be calculated twice
-const nSums = {};
-const nSum = (n) => (
-    nSums[n] ?
-        nSums[n]
-    :
-        nSums[n] = ((n * n) - n) / 2
-)
-   
+
+
+// the number of possible congigous subsequences of a seqeunce if the sum of n
+const nSum = (n) =>((n * n) - n)/2;  
+
+// the SeqArray keeps an array of sequences, each of which has a length and a type (1,0,-1) and is instantiated with a windowSize
+// first it needs to build a windows worth of entries using build() then add(el) each element as you read it.
 class SeqArray {
     constructor(k){
         this.seqs = [];
@@ -24,6 +21,7 @@ class SeqArray {
         })
         return(sum)
     }
+    // this is used to build, it checks for the seqsArray being empty
     addToSeqsBuild(type) {
         if (this.seqs.length === 0 || this.seqs[this.seqs.length - 1].type !== type) {
             this.seqs.push(new Seq(2, type));
@@ -31,10 +29,11 @@ class SeqArray {
             this.seqs[this.seqs.length - 1].length++;
         }
     }
+    // iterates through k elements of the Price array, adding to the last sequence or creating a new sequence
     build(prices){
-        this.last = prices.shift();
+        this.last = prices[0];
         for (let i=1; i<this.windowSize; i++){
-            let curr = prices.shift();
+            let curr = prices[i];
             if (curr > this.last){
                 this.addToSeqsBuild(1);
             }else if (curr === this.last){
@@ -49,7 +48,6 @@ class SeqArray {
     // decrements/removes the first sequence
     // incriments the last sequence or starts new one
     add(currentPrice){
-        // console.log('start',currentPrice, this.seqs)
         //decrement the first sequence
         this.seqs[0].length--
         // if its now empty delete it
@@ -64,7 +62,6 @@ class SeqArray {
         } else {
             this.addToSeqs(-1);
         }
-        // console.log('after',currentPrice,this.seqs)
         this.last = currentPrice;
     }
     // checks to see if the new element continues the last sequence
