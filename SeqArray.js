@@ -1,7 +1,7 @@
 const Seq = require('./Seq.js')
 
 
-const nSum = (n) =>((n * n) - n)/2;  
+const nSum = (n,type) =>((n * n) - n)/2 * type;  
 
 // the SeqArray keeps an array of sequences, each of which has a length and a type (1,0,-1) and is instantiated with a windowSize
 // first it needs to build a windows worth of entries using build() then add(el) each element as you read it.
@@ -10,15 +10,16 @@ class SeqArray {
         this.seqs = [];
         this.windowSize = k;
         this.last = null;
+        this.seqTotal = null;
     }
-    seqTotal(){
+    seqTotalBuild(){
         let sum = 0;
         this.seqs.forEach((seq)=>{
             if (seq.type !== 0){
-                sum += nSum(seq.length) * seq.type;
+                sum += nSum(seq.length, seq.type);
             }
         })
-        return(sum)
+        this.seqTotal = sum;
     }
     // this is used to add to sequences during build, it checks for the seqsArray being empty
     addToSeqsBuild(type) {
@@ -43,17 +44,23 @@ class SeqArray {
             }
             this.last = curr;
         }
+        this.seqTotalBuild();
         return this;
     }
     // decrements/removes the first sequence
     // increments the last sequence or starts new one
     add(price){
+        const originalFirstSeqTotal = nSum(this.seqs[0].length, this.seqs[0].type)
         const currentPrice = parseInt(price)
         //decrement the first sequence
         this.seqs[0].length--
         // if its is too small to have subsequence delete it
         if (this.seqs[0].length < 2){
             this.seqs.shift();
+            this.seqTotal = this.seqTotal - originalFirstSeqTotal;
+        }else{
+            const newFirstSeqTotal = nSum(this.seqs[0].length, this.seqs[0].type)
+            this.seqTotal = this.seqTotal -originalFirstSeqTotal + newFirstSeqTotal
         }
         //increment the last sequence or start a new one
         if (currentPrice > this.last) {
@@ -72,9 +79,15 @@ class SeqArray {
     addToSeqs(type){
         const length = this.seqs.length
         if (this.seqs[length - 1].type !== type) {
-            this.seqs.push(new Seq(2, type));
+            const newSeq = new Seq(2, type)
+            this.seqs.push(newSeq);
+            this.seqTotal = this.seqTotal + nSum(newSeq.length, newSeq.type)
         } else {
-            this.seqs[length - 1].length++;
+            const oldLast = this.seqs[length - 1];
+            const oldlastSeqTotal = nSum(oldLast.length,oldLast.type);
+            oldLast.length++;
+            const newLast = this.seqs[length - 1];
+            this.seqTotal = this.seqTotal - oldlastSeqTotal + nSum(newLast.length, newLast.type)
         }
     }
 }
