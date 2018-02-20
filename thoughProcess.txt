@@ -21,3 +21,6 @@ then I can get the total number of typed subsequences by iterating through the s
    - if it's more than and the last type of subsequence was increasing, increment the last sequence object, otherwise create a new sequence object.
    - do the same for decreasing and same, either incrementing the last sequence or adding a new sequence object.
 - after each iteration you calculate the number of subsequences
+
+I created a bash script that created test files, and I tested my JS against some data, It performed under 5 seconds for up to n=200,000 k=1000, but 
+with higher k would be slower than the allowed 10s. I hope you will Still consider me and I look forward to our next steps.

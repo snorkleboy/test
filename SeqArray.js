@@ -45,7 +45,7 @@ class SeqArray {
     return this;
     }
     // decrements/removes the first sequence
-    // incriments the last sequence or starts new one
+    // increments the last sequence or starts new one
     add(currentPrice){
         //decrement the first sequence
         this.seqs[0].length--
@@ -53,7 +53,7 @@ class SeqArray {
         if (this.seqs[0].length < 2){
             this.seqs.shift();
         }
-        //incriment the last sequence or start a new one
+        //increment the last sequence or start a new one
         if (currentPrice > this.last) {
             this.addToSeqs(1);
         } else if (currentPrice === this.last) {
@@ -65,7 +65,7 @@ class SeqArray {
     }
     // checks to see if the new element continues the last sequence
     // if it doesnt a new sequence is started
-    // else the last sequence is incrimented
+    // else the last sequence is incremented
     addToSeqs(type){
         const length = this.seqs.length
         if (this.seqs[length - 1].type !== type) {
