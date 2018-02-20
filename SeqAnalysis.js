@@ -18,7 +18,6 @@ const SeqAnalysis = function(k,priceArray){
     // each new element after seqArray has been built is a new window.
     for(let i = k; i < priceArray.length; i++){
         seqArray.add(priceArray[i]);
-        
         result.push(seqArray.seqTotal);
     }
     console.log(result.join('\n'));

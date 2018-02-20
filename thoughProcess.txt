@@ -1,7 +1,8 @@
 I tried to solve this problem using a dynamic programming approach. There are three key ideas:
 
 1)One window and the next window will share k-2 elements,with the first element being removed and a new last element added.
-This means that any subsequence that did not start on the first element will be a subsequences in the new window
+This means that any subsequence that did not start on the first element will be a subsequences in the new window and that
+the difference in subsequenceTotals between two adjacent windows will be equal to the differences of their first and last sequences.
 
 2)since we are looking for contiguous subsequences I know that a new element can only be part of the last sequence or the start of a new sequence, i.e previous
 sequence lengths are not affected.
@@ -13,14 +14,15 @@ so the number of subsequences = 2+1 = 3.
 This is equal to (the sum of n) - n == n(n+1)/2 - n == n(n-1)/2
 
 
-so my idea was to create a sequence object which has a length and a type (1,0,-1 for increasing, same, decreasing) and keep them in a k sized array,
-then I can get the total number of typed subsequences by iterating through the sequence objects and calculating the number of subsequences in each:
+so my idea was to create a sequence object which has a length and a type (1,0,-1 for increasing, same, decreasing) and keep each sequenence within k in a array.
+then as I iterate through the prices I remove 1 from the length of the first sequence and add to the last sequence:
 
+- build the first windows worth of elements into the sequenceArray
 - iterate through the array of prices keeping track of the last price and the last type of subsequence,
 - for each new price(n) decrement the first sequence and check the new price against the last price checked.
-   - if it's more than and the last type of subsequence was increasing, increment the last sequence object, otherwise create a new sequence object.
-   - do the same for decreasing and same, either incrementing the last sequence or adding a new sequence object.
-- after each iteration you calculate the number of subsequences
+    - if it's more than the last price, and if the type is the same, increment the last sequence object, otherwise create a new sequence object.
+    - do the same for decreasing and same, either incrementing the last sequence or adding a new sequence object.
+    - do the appropriate SequenceTotal calculation for modified,added, or removed sequences
 
-I created a bash script that created test files, and I tested my JS against some data, It performed under 5 seconds for up to n=200,000 k=1000, but 
-with higher k would be slower than the allowed 10s. I hope you will Still consider me and I look forward to our next steps.
+I created a bash script that created test files, and I tested my JS against some data, It performed under 5 seconds for up to n=200,000 k=62,000, but 
+right around there starts performing much slower. 

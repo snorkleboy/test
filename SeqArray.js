@@ -48,7 +48,9 @@ class SeqArray {
         return this;
     }
     // decrements/removes the first sequence
+    //  on decrement or remove it also recalculates the seqTotal
     // increments the last sequence or starts new one
+    // on increment or new() it also recalculates the seqTotal
     add(price){
         const originalFirstSeqTotal = nSum(this.seqs[0].length, this.seqs[0].type)
         const currentPrice = parseInt(price)
@@ -81,12 +83,14 @@ class SeqArray {
         if (this.seqs[length - 1].type !== type) {
             const newSeq = new Seq(2, type)
             this.seqs.push(newSeq);
+            // add new sequences to seqTotal
             this.seqTotal = this.seqTotal + nSum(newSeq.length, newSeq.type)
         } else {
             const oldLast = this.seqs[length - 1];
             const oldlastSeqTotal = nSum(oldLast.length,oldLast.type);
             oldLast.length++;
             const newLast = this.seqs[length - 1];
+            // add new sequences to seqTotal by removing the old and adding the new
             this.seqTotal = this.seqTotal - oldlastSeqTotal + nSum(newLast.length, newLast.type)
         }
     }
