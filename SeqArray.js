@@ -30,9 +30,10 @@ class SeqArray {
     }
     // iterates through k elements of the Price array, adding to the last sequence or creating a new sequence
     build(prices){
-        this.last = prices[0];
+        this.last = parseInt(prices[0]);
         for (let i=1; i<this.windowSize; i++){
-            let curr = prices[i];
+            let curr = parseInt(prices[i]);
+
             if (curr > this.last){
                 this.addToSeqsBuild(1);
             }else if (curr === this.last){
@@ -42,11 +43,12 @@ class SeqArray {
             }
             this.last = curr;
         }
-    return this;
+        return this;
     }
     // decrements/removes the first sequence
     // increments the last sequence or starts new one
-    add(currentPrice){
+    add(price){
+        const currentPrice = parseInt(price)
         //decrement the first sequence
         this.seqs[0].length--
         // if its is too small to have subsequence delete it
@@ -61,6 +63,7 @@ class SeqArray {
         } else {
             this.addToSeqs(-1);
         }
+        
         this.last = currentPrice;
     }
     // checks to see if the new element continues the last sequence

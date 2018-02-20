@@ -13,11 +13,13 @@ const SeqAnalysis = function(k,priceArray){
     result = [];
     const seqArray = new SeqArray(k).build(priceArray);
     result.push(seqArray.seqTotal());
+    
     // iterate through remaining members of priceArray and add each to SeqArray.
     // each new element after seqArray has been built is a new window.
     for(let i = k; i < priceArray.length; i++){
         seqArray.add(priceArray[i]);
-         result.push(seqArray.seqTotal());
+        
+        result.push(seqArray.seqTotal());
     }
     console.log(result.join('\n'));
 }
