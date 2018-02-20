@@ -1,7 +1,6 @@
 const Seq = require('./Seq.js')
 
 
-// the number of possible congigous subsequences of a seqeunce if the sum of n
 const nSum = (n) =>((n * n) - n)/2;  
 
 // the SeqArray keeps an array of sequences, each of which has a length and a type (1,0,-1) and is instantiated with a windowSize
@@ -21,7 +20,7 @@ class SeqArray {
         })
         return(sum)
     }
-    // this is used to build, it checks for the seqsArray being empty
+    // this is used to add to sequences during build, it checks for the seqsArray being empty
     addToSeqsBuild(type) {
         if (this.seqs.length === 0 || this.seqs[this.seqs.length - 1].type !== type) {
             this.seqs.push(new Seq(2, type));
@@ -50,7 +49,7 @@ class SeqArray {
     add(currentPrice){
         //decrement the first sequence
         this.seqs[0].length--
-        // if its now empty delete it
+        // if its is too small to have subsequence delete it
         if (this.seqs[0].length < 2){
             this.seqs.shift();
         }
@@ -66,7 +65,7 @@ class SeqArray {
     }
     // checks to see if the new element continues the last sequence
     // if it doesnt a new sequence is started
-    // else the last sequenec is incrimented
+    // else the last sequence is incrimented
     addToSeqs(type){
         const length = this.seqs.length
         if (this.seqs[length - 1].type !== type) {

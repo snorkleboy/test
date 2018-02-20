@@ -1,22 +1,23 @@
 I tried to solve this problem using a dynamic programming approach. There are three key ideas:
 
 1)One window and the next window will share k-2 elements,with the first element being removed and a new last element added.
-This means that any subseqeunces that didnt start on the first element will be a subseqeunces in the new window
+This means that any subsequence that did not start on the first element will be a subsequences in the new window
 
-2)since we are looking for continous subseqeunces I know that a new element can only be part of the last sequence or the start of a new sequence, i.e previous
+2)since we are looking for contiguous subsequences I know that a new element can only be part of the last sequence or the start of a new sequence, i.e previous
 sequence lengths are not affected.
 
 3)You can calculate the number of subsequences of a sequence. if you have a sequence a=[1,2,3], there are 0 sequences starting from 3,
  1 sequence starting from 2, and 2 sequences starting from 1,
 
-so the number of subsequences = 2+1 = 3. This is equal to (the sum of n) - n == n(n+1)/2 - n == n(n-1)/2
+so the number of subsequences = 2+1 = 3.
+This is equal to (the sum of n) - n == n(n+1)/2 - n == n(n-1)/2
 
 
 so my idea was to create a sequence object which has a length and a type (1,0,-1 for increasing, same, decreasing) and keep them in a k sized array,
-then I can get the total number of typed subseqeunces by iterating through the sequence objects and calculateing the number of subseqeunces in each:
+then I can get the total number of typed subsequences by iterating through the sequence objects and calculating the number of subsequences in each:
 
-- iterate through the array of prices keeping track of the last price and the last type of subseqeunce,
-- for each new price(n) decriment the first sequence and check the new price against the last price checked.
-   - if its more than and the last type of subsequence was increasing, incriment the last sequence object, otherwise create a new sequence object.
-   - do the same for decreasing and same, either incrimenting the last sequence or adding a new sequence object.
-- after each iteration you calculate the number of subseqeunces
+- iterate through the array of prices keeping track of the last price and the last type of subsequence,
+- for each new price(n) decrement the first sequence and check the new price against the last price checked.
+   - if it's more than and the last type of subsequence was increasing, increment the last sequence object, otherwise create a new sequence object.
+   - do the same for decreasing and same, either incrementing the last sequence or adding a new sequence object.
+- after each iteration you calculate the number of subsequences

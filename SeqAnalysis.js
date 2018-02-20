@@ -1,10 +1,10 @@
 const SeqArray = require('./SeqArray.js')
-// first a SeqArray is build
-// a SeqArray keeps track of sequences, thier length, start index(relative
-// to window size), and type.
+// first a SeqArray is built
+// a SeqArray keeps track of sequences, thier length and type(1,0,-1).
 // once the seqArray is build, the SeqTotal for the first window is
-// `for seq in seqArray sum+= ((seq.length^2 - seq.length)/2) * seq.type`
-// then iterate through the remaining prices, decrement/remove the seqArray.first seq 
+// `for seq in seqArray sum += ((seq.length^2 - seq.length)/2) * seq.type`
+
+// then iterate through the remaining prices, decrement/remove the seqArray.first
 // and incriment/add to seqArray.last depending on whether the new element is
 // a continuation of a previous contiguous subsequence or the start of a new one.
 const SeqAnalysis = function(k,priceArray){
